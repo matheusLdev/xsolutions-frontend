@@ -5,7 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Product } from '@/types/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Logo from '../../public/assets/images/logo-xsolution.png'; 
+import Logo from '../../public/assets/images/logo-xsolution.png';
 import Image from 'next/image';
 import './globals.css';
 import './page.css';
@@ -94,7 +94,9 @@ export default function Page() {
           <Button label="Criar Produto" icon="pi pi-plus" onClick={handleCreate} className="space" />
         </div>
         {isLoading ? (
-          <p>Carregando...</p>
+          <div className="spinner-container">
+            <ProgressSpinner style={{ width: '5rem', height: '5rem' }} strokeWidth="5" fill="#EEEEEE" animationDuration=".5s" />
+          </div>
         ) : (
           <DataTable value={produtos} className="centered-table">
             <Column field="id" header="ID" />
