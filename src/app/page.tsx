@@ -5,7 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Product } from '@/types/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Logo from '@/assets/images/logo-xsolution.png';
+import Logo from '../../public/assets/images/logo-xsolution.png'; 
 import Image from 'next/image';
 import './globals.css';
 import './page.css';
