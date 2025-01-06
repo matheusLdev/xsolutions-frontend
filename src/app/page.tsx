@@ -13,6 +13,7 @@ import ProductModal from '@/components/ModalProduct';
 import { deleteProduct, fetchProducts, createProduct, updateProduct } from '@/services/productsService';
 import { formatValue } from '@/utils/currency';
 import { useAlert } from '@/hooks/useAlert';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 export default function Page() {
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -20,7 +21,7 @@ export default function Page() {
   const { showSuccess, showError, ToastComponent } = useAlert();
   const queryClient = useQueryClient();
 
-  const { data: produtos, isLoading } = useQuery<Product[]>({
+  const { data: produtos, isLoading, error } = useQuery<Product[]>({
     queryKey: ['produtos'],
     queryFn: fetchProducts,
   });
@@ -96,6 +97,10 @@ export default function Page() {
         {isLoading ? (
           <div className="spinner-container">
             <ProgressSpinner style={{ width: '2rem', height: '2rem' }} strokeWidth="5" fill="#EEEEEE" animationDuration=".5s" />
+          </div>
+        ) : error ? (
+          <div className="error-message">
+            <p>Não conseguimos estabelecer uma conexão com o servidor. Tente novamente mais tarde.</p>
           </div>
         ) : (
           <DataTable value={produtos} className="centered-table">
