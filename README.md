@@ -16,10 +16,7 @@ git clone https://github.com/matheusLdev/xsolutions-frontend.git
 Acesse o diretório do projeto e instale as dependências com o seguinte comando:
 
 ```bash
-# Usando npm
-npm install
-
-# OU usando Yarn
+# Yarn
 yarn 
 ```
 
