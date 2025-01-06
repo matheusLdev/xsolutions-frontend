@@ -1,5 +1,5 @@
 export const truncatedValue = (value: number): number => {
-  return Math.floor(value * 100) / 100;
+  return value * 100 / 100;
 };
 
 export const formatValue = (value: number | undefined): string => {
