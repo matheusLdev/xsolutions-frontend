@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Projeto X-Solutions - Frontend  
+Esse projeto é um sistema de gerenciamento de produtos desenvolvido com **Next.js**, projetado para ser eficiente e intuitivo. Este frontend oferece uma interface moderna, onde é possível listar, criar, editar e excluir produtos, garantindo uma experiência de usuário fluida e responsiva.
 
-## Getting Started
+O projeto utiliza tecnologias como **React Query**, **PrimeReact** e **Axios**, além de um design customizável que facilita sua adaptação a diferentes cenários de negócios.
 
-First, run the development server:
+---
+
+## Passo 1: Clonar o Repositório  
+Primeiro, você precisa clonar o repositório do projeto na sua máquina local:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/matheusLdev/xsolutions-frontend.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Passo 2: Instalar Dependências 
+Acesse o diretório do projeto e instale as dependências com o seguinte comando:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Usando npm
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# OU usando Yarn
+yarn 
+```
 
-## Learn More
+## Passo 3: Iniciar o Servidor de Desenvolvimento
+Após instalar as dependências do projeto, inicie o servidor de desenvolvimento:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Usando npm
+npm run dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# OU usando Yarn
+yarn dev 
+```
+Acesse o projeto no navegador através de: http://localhost:3000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Pronto! :tada:
+O frontend está configurado e rodando localmente.  
 
-## Deploy on Vercel
+> **Importante:** Para que todas as funcionalidades do sistema operem corretamente, é necessário garantir que a API deste projeto também esteja rodando.  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Acesse o repositório do backend em: [https://github.com/matheusLdev/xsolutions-backend](https://github.com/matheusLdev/xsolutions-backend)  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+No repositório, siga as instruções detalhadas no README para configurar e executar o backend.
