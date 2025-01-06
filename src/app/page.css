@@ -1,0 +1,40 @@
+header, main {
+  padding: .5rem;
+}
+
+.image {
+  max-width: 14rem;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.sub-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.space {
+  gap: .5rem;
+  padding: .5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center; 
+  gap: 0.5rem;
+}
+
+.centered-table .p-column-header-content {
+  display: block;
+  text-align: center;
+}
+
+.centered-table .p-datatable-tbody > tr > td {
+  text-align: center;
+}
+
