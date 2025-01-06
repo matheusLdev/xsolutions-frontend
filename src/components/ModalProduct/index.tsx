@@ -51,8 +51,8 @@ export default function ProductModal({ visible, onHide, product, onSave }: Produ
 
     if (field === 'price') {
       const numericValue = value.replace(/\D/g, '');
-      const formattedValue = numericValue ? Math.floor(parseInt(numericValue, 10)) / 100 : 0;
-      setValue(field, formatValue(formattedValue));
+      const formattedValue = numericValue ? parseInt(numericValue, 10) : 0;
+      setValue(field, formatValue(formattedValue / 100));
       return;
     }
   };
