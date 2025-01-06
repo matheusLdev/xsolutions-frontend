@@ -95,7 +95,7 @@ export default function Page() {
         </div>
         {isLoading ? (
           <div className="spinner-container">
-            <ProgressSpinner style={{ width: '5rem', height: '5rem' }} strokeWidth="5" fill="#EEEEEE" animationDuration=".5s" />
+            <ProgressSpinner style={{ width: '2rem', height: '2rem' }} strokeWidth="5" fill="#EEEEEE" animationDuration=".5s" />
           </div>
         ) : (
           <DataTable value={produtos} className="centered-table">
