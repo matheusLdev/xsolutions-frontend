@@ -1,5 +1,26 @@
-.container {
+.input-container {
   display: flex;
   flex-direction: column;
   margin: 1rem auto;
+}
+
+.input-container label {
+  margin-bottom: 0.5rem;
+}
+
+.input-container .input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-container .input-error {
+  border-color: red;
+}
+
+.input-container .error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }

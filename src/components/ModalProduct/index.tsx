@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Product } from '@/types/types';
 import { formatValue } from '@/utils/currency';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import Input from '../Input';
 import './styles.css';
 
@@ -13,52 +16,53 @@ interface ProductModalProps {
   onSave: (productData: Partial<Product>) => void;
 }
 
+const productSchema = z.object({
+  name: z.string().min(1, 'Nome do produto é obrigatório'),
+  price: z.string().min(0, 'Preço deve ser maior que zero'),
+  quantity: z.number().min(0, 'Quantidade não pode ser negativa'),
+});
+
+type ProductForm = z.infer<typeof productSchema>;
+
 export default function ProductModal({ visible, onHide, product, onSave }: ProductModalProps) {
-  const [productData, setProductData] = useState<Partial<Product>>(product ?? {});
+  const { control, handleSubmit, reset, setValue, formState: { errors } } = useForm<ProductForm>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: product?.name || '',
+      price: product?.price ? formatValue(product.price) : '',
+      quantity: product?.quantity || 0,
+    },
+  });
 
   useEffect(() => {
-    if (product) setProductData(product);
-  }, [product]);
+    if (product) {
+      reset({
+        name: product.name,
+        price: formatValue(product.price),
+        quantity: product.quantity,
+      });
+    } else {
+      reset({ name: '', price: '', quantity: 0 });
+    }
+  }, [product, reset, visible]);
 
-  useEffect(() => {
-    if (!visible) setProductData({});
-  }, [visible]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    const value = e.target.value;
 
-  const handleSave = () => {
-    onSave(productData);
+    if (field === 'price') {
+      const numericValue = value.replace(/\D/g, '');
+      const formattedValue = numericValue ? Math.floor(parseInt(numericValue, 10)) / 100 : 0;
+      setValue(field, formatValue(formattedValue));
+      return;
+    }
   };
 
-  const handleChange = (value: string | number, field: 'name' | 'price' | 'quantity') => {
-    if (value === undefined || value === null) return;  
-  
-    if (field === 'price') {
-      const numericValue = value.toString().replace(/\D/g, '');
-      const formattedValue = numericValue ? Math.floor(parseInt(numericValue, 10)) / 100 : 0;
-  
-      setProductData(prevData => ({
-        ...prevData,
-        [field]: formattedValue || 0,
-      }));
-  
-      return;
-    }
-  
-    if (field === 'quantity') {
-      const parsedValue = parseInt(value.toString(), 10);
-      setProductData(prevData => ({
-        ...prevData,
-        [field]: parsedValue,
-      }));
-      return;
-    }
-  
-    if (field === 'name') {
-      setProductData(prevData => ({
-        ...prevData,
-        [field]: value.toString(),
-      }));
-      return;
-    }
+  const onSubmit = (data: ProductForm) => {
+    const formattedData = {
+      ...data,
+      price: Number(data.price.replace(/\D/g, '')) / 100,
+    };
+    onSave(formattedData);
   };
 
   return (
@@ -69,34 +73,55 @@ export default function ProductModal({ visible, onHide, product, onSave }: Produ
       footer={
         <div className="modal-footer">
           <Button label="Cancelar" icon="pi pi-times" onClick={onHide} className="p-button-text space" />
-          <Button label={product ? "Salvar" : 'Criar Produto'} icon="pi pi-check" onClick={handleSave} className='space' />
+          <Button label={product ? "Salvar" : 'Criar Produto'} icon="pi pi-check" onClick={handleSubmit(onSubmit)} className='space' />
         </div>
       }
       className="modal-container"
     >
       <div className="modal-content">
-        <Input
-          id="name"
-          label="Nome do Produto"
-          placeholder="Digite o nome do produto"
-          value={productData.name || ''}
-          onChange={e => handleChange(e, 'name')}
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <Input
+              id="name"
+              label="Nome do Produto"
+              placeholder="Digite o nome do produto"
+              value={field.value}
+              onChange={(e) => field.onChange(e.target.value)}
+              error={errors.name?.message}
+            />
+          )}
         />
-        <Input
-          id="price"
-          label="Preço"
-          placeholder='Digite o preço do produto'
-          value={productData?.price ? formatValue(productData.price) : ''}
-          onChange={e => handleChange(e, 'price')}
-          type="text"
+        <Controller
+          name="price"
+          control={control}
+          render={({ field }) => (
+            <Input
+              id="price"
+              label="Preço"
+              placeholder="Digite o preço do produto"
+              value={field.value}
+              onChange={(e) => handleChange(e, 'price')}
+              type="text"
+              error={errors.price?.message}
+            />
+          )}
         />
-        <Input
-          id="quantity"
-          label="Quantidade"
-          placeholder='Digite a quantidade do produto'
-          value={productData?.quantity?.toString() || ''}
-          onChange={e => handleChange(e, 'quantity')}
-          type="number"
+        <Controller
+          name="quantity"
+          control={control}
+          render={({ field }) => (
+            <Input
+              id="quantity"
+              label="Quantidade"
+              placeholder="Digite a quantidade do produto"
+              value={field.value}
+              onChange={(e) => field.onChange(Number(e.target.value))}
+              type="number"
+              error={errors.quantity?.message}
+            />
+          )}
         />
       </div>
     </Dialog>

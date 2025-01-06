@@ -1,35 +1,30 @@
-import { InputText } from 'primereact/inputtext';
 import './styles.css';
 
 interface InputProps {
   id: string;
   label: string;
-  value: string;
-  placeholder?: string;
-  onChange: (value: string | number) => void;
+  placeholder: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
+  error?: string;
 }
 
-export default function Input({
-  id,
-  label,
-  value,
-  placeholder,
-  onChange,
-  type = 'text',
-}: InputProps) {
+const Input = ({ id, label, placeholder, value, onChange, type = "text", error }: InputProps) => {
   return (
-    <div className="p-field container" >
-      <label htmlFor={id} style={{ marginBottom: '0.5rem' }}>
-        {label}
-      </label>
-      <InputText
+    <div className="input-container">
+      <label htmlFor={id}>{label}</label>
+      <input
         id={id}
         type={type}
-        value={value.toString()}
         placeholder={placeholder}
-        onChange={(e) => onChange(type === 'number' ? Number(e.target.value) : e.target.value)}
+        value={value}
+        onChange={onChange}
+        className={`input ${error ? 'input-error' : ''}`}
       />
+      {error && <small className="error-message">{error}</small>}
     </div>
   );
-}
+};
+
+export default Input;
