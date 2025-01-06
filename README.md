@@ -24,10 +24,7 @@ yarn
 Após instalar as dependências do projeto, inicie o servidor de desenvolvimento:
 
 ```bash
-# Usando npm
-npm run dev
-
-# OU usando Yarn
+# Yarn
 yarn dev 
 ```
 Acesse o projeto no navegador através de: http://localhost:3000
