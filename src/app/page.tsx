@@ -5,7 +5,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Product } from '@/types/types';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Logo from '@/assets/images/logo-xsolution.png';
 import Image from 'next/image';
 import './globals.css';
@@ -13,16 +13,33 @@ import './page.css';
 import ProductModal from '@/components/ModalProduct';
 import { deleteProduct, fetchProducts } from '@/services/productsService';
 import { formatValue } from '@/utils/currency';
+import { useAlert } from '@/hooks/useAlert';
 
 export default function Page() {
   const [dialogVisible, setDialogVisible] = useState(false);
+  const queryClient = useQueryClient();
+  const { showSuccess, showError, ToastComponent } = useAlert();
   const { data: produtos, isLoading } = useQuery<Product[]>({
     queryKey: ['produtos'],
     queryFn: fetchProducts,
   });
 
+  const mutation = useMutation({
+  mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['produtos'] });
+      showSuccess('Produto deletado com sucesso!');
+    },
+    onError: () => {
+      showError('Erro ao deletar produto, tente novamente.');
+    }
+  });
+
+  const handleDelete = (productId: number) => {
+    mutation.mutate(productId);
+  };
+
   const handleEdit = (product: Product) => {
-    // Lógica de edição
     console.log('Editar produto', product);
     setDialogVisible(true);
   };
@@ -33,6 +50,7 @@ export default function Page() {
 
   return (
     <>
+      <ToastComponent />
       <header>
         <Image 
           src={Logo} 
@@ -66,7 +84,7 @@ export default function Page() {
                 <Button 
                   icon="pi pi-trash" 
                   className="p-button-rounded p-button-danger p-button-text" 
-                  onClick={() => deleteProduct(rowData.id)} 
+                  onClick={() => handleDelete(rowData.id)} 
                 />
               </div>
             )}
