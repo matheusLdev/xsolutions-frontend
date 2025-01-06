@@ -69,7 +69,10 @@ export default function Page() {
   };
 
   const handleSave = (productData: Partial<Product>) => {
-    saveMutation.mutate(productData);
+    saveMutation.mutate({
+      ...productData,
+      id: selectedProduct?.id,
+    });
   };
 
   const closeModal = () => {
@@ -90,29 +93,33 @@ export default function Page() {
           <h1>Produtos cadastrados</h1>
           <Button label="Criar Produto" icon="pi pi-plus" onClick={handleCreate} className="space" />
         </div>
-        <DataTable value={produtos} className="centered-table">
-          <Column field="id" header="ID" />
-          <Column field="name" header="Nome" />
-          <Column field="price" header="Preço" body={priceBodyTemplate} />
-          <Column field="quantity" header="Quantidade" />
-          <Column
-            header="Ações"
-            body={(rowData: Product) => (
-              <div className="actions">
-                <Button
-                  icon="pi pi-pencil"
-                  className="p-button-rounded p-button-info p-button-text"
-                  onClick={() => handleEdit(rowData)}
-                />
-                <Button
-                  icon="pi pi-trash"
-                  className="p-button-rounded p-button-danger p-button-text"
-                  onClick={() => handleDelete(rowData.id)}
-                />
-              </div>
-            )}
-          />
-        </DataTable>
+        {isLoading ? (
+          <p>Carregando...</p>
+        ) : (
+          <DataTable value={produtos} className="centered-table">
+            <Column field="id" header="ID" />
+            <Column field="name" header="Nome" />
+            <Column field="price" header="Preço" body={priceBodyTemplate} />
+            <Column field="quantity" header="Quantidade" />
+            <Column
+              header="Ações"
+              body={(rowData: Product) => (
+                <div className="actions">
+                  <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-info p-button-text"
+                    onClick={() => handleEdit(rowData)}
+                  />
+                  <Button
+                    icon="pi pi-trash"
+                    className="p-button-rounded p-button-danger p-button-text"
+                    onClick={() => handleDelete(rowData.id)}
+                  />
+                </div>
+              )}
+            />
+          </DataTable>
+        )}
       </main>
       <ProductModal
         visible={dialogVisible}
