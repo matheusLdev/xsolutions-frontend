@@ -3,7 +3,6 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Product } from '@/types/types';
 import { formatValue } from '@/utils/currency';
-// import { createProduct, updateProduct } from '@/services/productsService';
 import Input from '../Input';
 import './styles.css';
 
@@ -11,32 +10,22 @@ interface ProductModalProps {
   visible: boolean;
   onHide: () => void;
   product?: Product;
+  onSave: (productData: Partial<Product>) => void;
 }
 
-export default function ProductModal({ visible, onHide, product }: ProductModalProps) {
+export default function ProductModal({ visible, onHide, product, onSave }: ProductModalProps) {
   const [productData, setProductData] = useState<Partial<Product>>(product ?? {});
 
   useEffect(() => {
     if (product) setProductData(product);
   }, [product]);
 
-  const handleSave = async () => {
-    try {
-      console.log('productData', productData);
-      if (productData?.id) {
-        // const updateData = {
-        //   name: productData.name,
-        //   price: productData.price,
-        //   quantity: productData.quantity,
-        // };
-        // await updateProduct(productData.id, updateData);
-      } else {
-        // if (productData) await createProduct(productData);
-      }
-      // onHide();
-    } catch (error) {
-      console.error('Erro ao salvar o produto', error);
-    }
+  useEffect(() => {
+    if (!visible) setProductData({});
+  }, [visible]);
+
+  const handleSave = () => {
+    onSave(productData);
   };
 
   const handleChange = (value: string | number, field: 'name' | 'price' | 'quantity') => {
